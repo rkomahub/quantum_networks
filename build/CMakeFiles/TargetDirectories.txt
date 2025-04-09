@@ -1,0 +1,3 @@
+/home/marcobenazzi/quantum_net/build/CMakeFiles/quantum_net.dir
+/home/marcobenazzi/quantum_net/build/CMakeFiles/edit_cache.dir
+/home/marcobenazzi/quantum_net/build/CMakeFiles/rebuild_cache.dir
