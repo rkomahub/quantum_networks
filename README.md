@@ -1,21 +1,41 @@
-# Complex Quantum Network Geometries
+# 🌌 Complex Quantum Network Geometries
 
-This project simulates the evolution of complex quantum networks following the model described by Ginestra Bianconi in ["Complex Quantum Network Geometries: Evolution and Phase Transition"](https://arxiv.org/pdf/1503.04739).
+This C++ project simulates the **evolution of complex quantum networks** following the model described by Ginestra Bianconi in [Complex Quantum Network Geometries: Evolution and Phase Transition (2015)](https://arxiv.org/abs/1503.04739).
+
+## 📘 Theoretical Background
+
+The simulation grows **simplicial 2-complexes** (i.e. networks built from triangles) that evolve under:
+- **Fermi-Dirac statistics**: each link can host at most one extra triangle (m = 2).
+- **Bose-Einstein statistics**: each link can host an unlimited number of triangles (m = ∞).
+
+Each link has an **energy** ε determined by node energies \( \omega_i, \omega_j \), e.g.:
+- Linear: \( \varepsilon_{ij} = \omega_i + \omega_j \)
+- Quadratic: \( \varepsilon_{ij} = J(J + 1), \; J = \frac{\omega_i + \omega_j}{2} \)
+
+Growth is controlled by an inverse temperature parameter \( \beta \). At high β, networks undergo structural **phase transitions**.
+
+---
 
 ## 🧠 Key Features
 
-- Fermi-Dirac and Bose-Einstein statistics
-- Linear energy model for link formation
-- Growth driven by inverse temperature parameter \( \beta \)
+- Fermi-Dirac & Bose-Einstein quantum network evolution
+- Poisson-distributed node energies (configurable)
+- Dynamic link selection weighted by energy + triangle count
 - Automatic export of:
-  - Max shortest distance
-  - Maximum node degree \( k_{\text{max}} \)
-  - Entropy rate \( H^{[1]} \)
-  - Modularity \( M \)
-  - Clustering coefficient \( C \)
-  - Node curvature \( R_i \)
-- Visualization scripts with error bars from multiple trials
-- Automatic detection of phase transition \( \beta_c \)
+  - 📏 Max shortest path distance
+  - 📶 Max degree \( k_{\text{max}} \)
+  - 🧠 Entropy rate \( H^{[1]} \)
+  - 🧩 Modularity (Louvain method)
+  - 🔗 Clustering coefficient \( C \)
+  - 🌀 Node curvature \( R_i \)
+- Python scripts for:
+  - Metric plots vs. \( \beta \)
+  - Metric evolution over time
+  - Error bars over trials
+  - Degree, clustering, and curvature distributions
+  - Automatic detection of phase transition \( \beta_c \)
+
+---
 
 ## 🔧 Compilation
 
@@ -62,19 +82,19 @@ build/graphs/
 ## 📁 Project Folder Structure
 
 ```
-quantum_net/
 ├── CMakeLists.txt
-├── src/
-│   ├── main.cpp
-│   ├── network.cpp / .hpp
-│   ├── metrics.cpp / .hpp
-│   └── ...
+├── main.cpp
+├── node.cpp/hpp, link.cpp/hpp, triangle.cpp/hpp
+├── network.cpp/hpp
+├── growth_engine.cpp/hpp
+├── metrics.cpp/hpp
+├── plot_network_metrics.py
 ├── visualize_errorbars.py
 ├── README.md
 └── build/
-    ├── raw_csv/              # Exported CSVs from C++
-    ├── graphs/               # Plots from Python
-    └── metrics/              # Intermediate metric results (optional)
+    ├── raw_csv/     # Exported data
+    ├── graphs/      # Final plots
+    └── metrics/     # Degree, curvature, clustering
 ```
 
 ## 📘 Reference
