@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Complex Quantum Network Geometries
 
 This project simulates the evolution of complex quantum networks following the model described by Ginestra Bianconi in ["Complex Quantum Network Geometries: Evolution and Phase Transition"](https://arxiv.org/pdf/1503.04739).
