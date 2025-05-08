@@ -8,7 +8,9 @@ import networkx as nx
 os.makedirs("build/metrics", exist_ok=True)
 
 def plot_degree_distribution(edge_file, label, outname):
-    G = nx.read_edgelist(edge_file, delimiter=",", skip_header=True, nodetype=int)
+    with open(edge_file, "r") as f:
+        lines = f.readlines()[1:]  # Skip header
+        G = nx.parse_edgelist(lines, delimiter=",", nodetype=int)
     degrees = [d for _, d in G.degree()]
     values, counts = np.unique(degrees, return_counts=True)
     plt.figure()
@@ -23,7 +25,9 @@ def plot_degree_distribution(edge_file, label, outname):
     print(f"✅ Saved: {outname}_degree_distribution.png")
 
 def plot_clustering_vs_degree(edge_file, label, outname):
-    G = nx.read_edgelist(edge_file, delimiter=",", skip_header=True, nodetype=int)
+    with open(edge_file, "r") as f:
+        lines = f.readlines()[1:]  # Skip header
+        G = nx.parse_edgelist(lines, delimiter=",", nodetype=int)
     clustering = nx.clustering(G)
     degree = dict(G.degree())
     data = [(degree[n], clustering[n]) for n in G.nodes()]
@@ -56,13 +60,39 @@ def plot_curvature_distribution(curvature_file, label, outname):
 
 # --- Batch run for β = 0.05, 0.5, 5.0 ---
 cases = ["fermi", "bose"]
-betas = ["0_05", "0_5", "5_0"]
+betas = ["0_05", "0_50", "5_00"]
+
+def plot_adjacency_matrix(edge_file, label, outname, max_nodes=1000):
+    with open(edge_file, "r") as f:
+        lines = f.readlines()[1:]  # Skip header
+        G = nx.parse_edgelist(lines, delimiter=",", nodetype=int)
+
+    # Take only a subset of the nodes
+    nodes = sorted(G.nodes())[:max_nodes]
+    G_sub = G.subgraph(nodes)
+    A = nx.to_numpy_array(G_sub, nodelist=nodes)
+
+    plt.figure(figsize=(8, 8))
+    plt.imshow(A, cmap="viridis", interpolation="nearest")
+    plt.title(f"Adjacency Matrix - {label} (Top {max_nodes} nodes)")
+    plt.xlabel("Node index")
+    plt.ylabel("Node index")
+    plt.tight_layout()
+    plt.savefig(f"build/metrics/{outname}_adjacency_matrix.png", dpi=300)
+    plt.close()
+    print(f"✅ Saved: {outname}_adjacency_matrix.png")
 
 for case in cases:
     for beta_str in betas:
         tag = f"beta{beta_str}_N100000_seed0"
-        label = f"{case.capitalize()} β={beta_str.replace('_', '.')}"
         prefix = f"build/raw_csv/{case}_{tag}"
+        label = f"{case.capitalize()} β={beta_str.replace('_', '.')}"
+
+        if not os.path.exists(f"{prefix}_edges.csv"):
+            print(f"⚠️  Skipping {prefix} — edges file not found.")
+            continue
+
         plot_degree_distribution(f"{prefix}_edges.csv", label, f"{case}_{tag}")
         plot_clustering_vs_degree(f"{prefix}_edges.csv", label, f"{case}_{tag}")
         plot_curvature_distribution(f"{prefix}_curvature_nodes.csv", label, f"{case}_{tag}")
+        plot_adjacency_matrix(f"{prefix}_edges.csv", label, f"{case}_{tag}")

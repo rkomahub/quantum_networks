@@ -1,6 +1,8 @@
 #include "growth_engine.hpp"
+#include <iostream> // for std::cout
 #include <numeric>
 #include <random>
+#include <stdexcept> // for std::runtime_error
 #include <vector>
 
 GrowthEngine::GrowthEngine(Network &network, int lambda)
@@ -34,8 +36,11 @@ void GrowthEngine::growOneStep() {
     }
   }
 
-  if (Z == 0.0 || probabilities.empty())
-    return;
+  if (Z == 0.0 || probabilities.empty()) {
+    std::cout << "⚠️ No valid links available for growth (Z = 0). Hanging "
+                 "prevented.\n";
+    throw std::runtime_error("No possible growth steps (Z = 0).");
+  }
 
   // Create a discrete distribution
   std::vector<double> weights;
@@ -51,6 +56,5 @@ void GrowthEngine::growOneStep() {
   // Create a new node with random energy ω
   int ω = energySampler();      // 🔁 uses current sampler
   int newNode = net.addNode(ω); // 🎯 Add new node to the network
-
   net.addTriangle(i, j, newNode);
 }

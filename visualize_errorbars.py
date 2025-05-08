@@ -159,7 +159,8 @@ def plot_metric_vs_time_with_error(phase, prefix, metric_col, title, ylabel, out
     grouped = {}
 
     for file in files:
-        beta_str = file.split("_beta")[1].split("_")[0].replace("_", ".")
+        beta_part = file.split("_beta")[1]
+        beta_str = beta_part.split("_N")[0].replace("_", ".")
         beta = float(beta_str)
 
         df = pd.read_csv(file)
