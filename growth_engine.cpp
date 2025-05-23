@@ -1,8 +1,8 @@
 #include "growth_engine.hpp"
-#include <iostream> // for std::cout
+#include <iostream>
 #include <numeric>
 #include <random>
-#include <stdexcept> // for std::runtime_error
+#include <stdexcept>
 #include <vector>
 
 GrowthEngine::GrowthEngine(Network &network, int lambda)
@@ -18,7 +18,7 @@ GrowthEngine::GrowthEngine(Network &network, int lambda)
 void GrowthEngine::setEnergySampler(std::function<int()> sampler) {
   energySampler = sampler;
 }
-// 🎯 allows switching!
+// Allows switching!
 // This function allows the user to set a custom energy sampling function
 // for the growth process.
 // The default is a Poisson distribution with mean 5.
@@ -54,7 +54,7 @@ void GrowthEngine::growOneStep() {
   auto [i, j] = probabilities[idx].first;
 
   // Create a new node with random energy ω
-  int ω = energySampler();      // 🔁 uses current sampler
-  int newNode = net.addNode(ω); // 🎯 Add new node to the network
+  int ω = energySampler();      // uses current sampler
+  int newNode = net.addNode(ω); // add new node to the network
   net.addTriangle(i, j, newNode);
 }

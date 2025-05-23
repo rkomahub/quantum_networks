@@ -9,11 +9,11 @@ public:
 
   // Performs one step of growth by adding a triangle
   void growOneStep();
-  void setEnergySampler(std::function<int()> sampler); // 🎯 allows switching!
+  void setEnergySampler(std::function<int()> sampler); // allows switching!
 
 private:
   Network &net; // Reference to the network being grown
   std::poisson_distribution<int>
       poissonDist;                    // Poisson distribution for random growth
-  std::function<int()> energySampler; // 🧠 dynamic sampler
+  std::function<int()> energySampler; // dynamic sampler
 };

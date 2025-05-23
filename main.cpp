@@ -185,5 +185,3 @@ int main() {
 
   return 0;
 }
-// This code simulates a quantum network with both Bose-Einstein and Fermi-Dirac
-// statistics.

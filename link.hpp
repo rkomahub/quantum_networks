@@ -8,7 +8,7 @@ public:
   int energy;
   int numTriangles;
 
-  // Default constructor (required for std::map safety)
+  // Default constructor
   Link();
 
   // Main constructor
