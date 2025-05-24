@@ -70,7 +70,8 @@ This will export CSVs into `build/raw_csv/`.
 ## 📊 Visualize Results
 
 ```bash
-python3 visualize.py
+python3 visualize_errorbars.py
+python3 plot_network_metrics.py
 ```
 
 This will generate plots in:
